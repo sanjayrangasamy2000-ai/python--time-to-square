@@ -1,0 +1,270 @@
+# TODO 1.1: Load the dataset using pandas and display the first few rows
+
+import pandas as pd
+
+# Dataset URL
+url = "https://gitlab.crio.do/me_notebook/me_jupyter_bankattritionanalysis/-/raw/master/bank_attrition_dataset.csv"
+
+# Load dataset and skip metadata row
+df = pd.read_csv(url, skiprows=[1])
+
+# Display first few rows
+df.head()
+# TODO 1.1: Load the dataset using pandas and display the first few rows
+​
+import pandas as pd
+​
+# Dataset URL
+url = "https://gitlab.crio.do/me_notebook/me_jupyter_bankattritionanalysis/-/raw/master/bank_attrition_dataset.csv"
+​
+# Load dataset and skip metadata row
+df = pd.read_csv(url, skiprows=[1])
+​
+# Display first few rows
+df.head()
+RowNumber	CustomerId	first_name	state	Gender	Age	Tenure	CreditScore	Balance	HasCrCard	...	HasFD	NumOfProducts	IsActiveMember	Salary	Exited	Complain	NumComplain	Satisfaction Score	Point Earned	PreferredChannel
+0	1	TN00001	Sunita	Tamil Nadu	Female	26	1	673	117822.37	1	...	1	2	1	62000.0	0	0	0	5.0	100	Mobile
+1	2	MH00002	Rohan	Maharashtra	Male	54	4	600	163508.11	1	...	1	3	1	62000.0	0	0	0	10.0	150	Mobile
+2	3	KA00003	Ananya	Karnataka	Female	58	1	724	138773.12	1	...	1	3	1	97000.0	0	0	0	5.0	100	Mobile
+3	4	MH00004	Nandini	Maharashtra	Female	39	2	695	136048.53	1	...	0	1	1	157000.0	0	0	0	10.0	150	Email
+4	5	WB00005	Charvi	West Bengal	Female	25	3	675	27798.19	0	...	0	0	1	146000.0	0	0	0	6.0	110	Mobile
+5 rows × 22 columns
+
+# TODO 1.2: Load the dataset using pandas by skipping row containing metadata and display the first few rows
+✅ Step 2: Check Column Headers
+# TODO 2.1: Print the column names of the dataset.
+print("Original Columns:\n", df.columns)
+Original Columns:
+ Index(['RowNumber', 'CustomerId', 'first_name', 'state', 'Gender', 'Age',
+       'Tenure', 'CreditScore', 'Balance', 'HasCrCard', 'Card Type', 'HasLoan',
+       'HasFD', 'NumOfProducts', 'IsActiveMember', 'Salary', 'Exited',
+       'Complain', 'NumComplain', 'Satisfaction Score', 'Point Earned',
+       'PreferredChannel'],
+      dtype='object')
+# TODO 2.2:Standardize the column names: convert to lowercase and replace spaces with underscores.
+df.columns = df.columns.str.lower().str.replace(' ', '_')
+print("Standardized Columns:\n", df.columns) 
+Standardized Columns:
+ Index(['rownumber', 'customerid', 'first_name', 'state', 'gender', 'age',
+       'tenure', 'creditscore', 'balance', 'hascrcard', 'card_type', 'hasloan',
+       'hasfd', 'numofproducts', 'isactivemember', 'salary', 'exited',
+       'complain', 'numcomplain', 'satisfaction_score', 'point_earned',
+       'preferredchannel'],
+      dtype='object')
+✅ Step 3: Handle Missing Values
+# TODO 3.1: Check for missing values in the dataset, Print the count of missing values in each column
+# Convert numeric-looking columns to numeric dtype
+numeric_cols = ['age', 'tenure', 'creditscore', 'balance', 'numofproducts', 
+                'salary', 'numcomplain', 'point_earned', 'satisfaction_score']
+​
+for col in numeric_cols:
+    df[col] = pd.to_numeric(df[col], errors='coerce')
+    
+print("Missing Values Before Handling:\n", df.isnull().sum())
+Missing Values Before Handling:
+ rownumber              0
+customerid             0
+first_name             0
+state                  0
+gender                16
+age                    0
+tenure                 0
+creditscore            0
+balance                9
+hascrcard              0
+card_type              8
+hasloan                0
+hasfd                  0
+numofproducts          0
+isactivemember         0
+salary                12
+exited                 0
+complain               0
+numcomplain            0
+satisfaction_score     8
+point_earned           0
+preferredchannel       0
+dtype: int64
+# TODO 3.2: Impute missing 'salary' values with median
+df['salary'].fillna(df['salary'].median(), inplace=True)
+​
+/tmp/ipykernel_34/1006751894.py:2: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['salary'].fillna(df['salary'].median(), inplace=True)
+# TODO 3.3: Impute missing 'balance' values with 0
+df['balance'].fillna(0, inplace=True)
+/tmp/ipykernel_34/3536500069.py:2: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['balance'].fillna(0, inplace=True)
+# TODO 3.4: Impute missing 'satisfaction_score' with median
+df['satisfaction_score'].fillna(df['satisfaction_score'].median(), inplace=True)
+​
+/tmp/ipykernel_34/3122287748.py:2: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['satisfaction_score'].fillna(df['satisfaction_score'].median(), inplace=True)
+# TODO 3.5: Drop rows where 'gender' is missing
+df.dropna(subset=['gender'], inplace=True)
+​
+# TODO 3.6 : Fill missing 'card_type' with the most frequent value (mode)
+df['card_type'].fillna(df['card_type'].mode()[0], inplace=True)
+/tmp/ipykernel_34/2487699750.py:2: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['card_type'].fillna(df['card_type'].mode()[0], inplace=True)
+# TODO 3.7: Print the count of missing values in each column
+print("Missing Values After Handling:\n", df.isnull().sum())
+Missing Values After Handling:
+ rownumber             0
+customerid            0
+first_name            0
+state                 0
+gender                0
+age                   0
+tenure                0
+creditscore           0
+balance               0
+hascrcard             0
+card_type             0
+hasloan               0
+hasfd                 0
+numofproducts         0
+isactivemember        0
+salary                0
+exited                0
+complain              0
+numcomplain           0
+satisfaction_score    0
+point_earned          0
+preferredchannel      0
+dtype: int64
+✅ Step 4: Clean Up Text Columns
+# TODO 4.1: Display unique card types
+print("Unique card types before cleaning:\n", df['card_type'].unique())
+Unique card types before cleaning:
+ ['Silver ' 'Gold ' 'GOLD' 'Platinum' 'Not Applicable' 'Silver' 'Gold']
+# TODO 4.2: Convert 'card_type' to uppercase
+df['card_type'] = df['card_type'].str.upper()
+# TODO 4.3: Strip whitespace from 'card_type'
+df['card_type'] = df['card_type'].str.strip()
+print("Unique card types after cleaning:\n", df['card_type'].unique())
+​
+Unique card types after cleaning:
+ ['SILVER' 'GOLD' 'PLATINUM' 'NOT APPLICABLE']
+✅ Step 5: Explore Numeric Columns
+# TODO 5.1: Identify all numeric columns
+​
+numeric_columns = df.select_dtypes(include=['number']).columns.tolist()
+print(numeric_columns)
+['rownumber', 'age', 'tenure', 'creditscore', 'balance', 'hascrcard', 'hasloan', 'hasfd', 'numofproducts', 'isactivemember', 'salary', 'exited', 'complain', 'numcomplain', 'satisfaction_score', 'point_earned']
+# TODO 5.2: Count unique values in each numeric column
+​
+for col in numeric_columns:
+    print(f"{col}: {df[col].nunique()}")
+​
+rownumber: 14984
+age: 73
+tenure: 34
+creditscore: 484
+balance: 12666
+hascrcard: 2
+hasloan: 2
+hasfd: 2
+numofproducts: 4
+isactivemember: 2
+salary: 200
+exited: 2
+complain: 2
+numcomplain: 50
+satisfaction_score: 12
+point_earned: 110
+✅ Step 6: Outlier Detection and Treatment
+# TODO 6.1: Import matplotlib
+​
+import matplotlib.pyplot as plt
+import numpy as np
+​
+# TODO 6.2: Plot boxplot for 'salary'
+# Chart title: Salary Distribution
+​
+plt.figure(figsize=(8, 5))
+plt.hist(df['salary'], bins=20)
+plt.title('Salary Distribution')
+plt.xlabel('salary')
+plt.ylabel('frequency')
+plt.show()
+
+# TODO 6.3: Plot boxplot for 'balance'
+# Chart title: Balance Distribution 
+​
+fig2, ax2 = plt.subplots(figsize=(8,5))
+ax2.boxplot(df['balance'])
+ax2.set_title("Balance Distribution")
+plt.show()
+
+# TODO 6.4 : Identify and count outliers in salary using IQR method
+​
+Q1 = df['salary'].quantile(0.25)
+Q3 = df['salary'].quantile(0.75)
+IQR = Q3 - Q1
+upper_bound = Q3 + 1.5 * IQR
+lower_bound = Q1 - 1.5 * IQR
+​
+outliers = df[(df['salary'] < lower_bound) | (df['salary'] > upper_bound)]
+print(f"Number of Salary Outliers: {outliers.shape[0]}")
+Number of Salary Outliers: 31
+# TODO 6.5: Cap salary outliers at the upper bound
+​
+df['salary'] = np.where(df['salary'] > upper_bound, upper_bound, df['salary'])
+​
+​
+# TODO 6.6 Plot Salary distribution after handling outiers
+# Chart title: Salary Distribution - Outliers Handled
+​
+# Salary distribution after handling outliers
+​
+df['salary'] = np.where(df['salary'] > upper_bound, upper_bound, df['salary'])
+​
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+Index: 14984 entries, 0 to 14999
+Data columns (total 22 columns):
+ #   Column              Non-Null Count  Dtype  
+---  ------              --------------  -----  
+ 0   rownumber           14984 non-null  int64  
+ 1   customerid          14984 non-null  object 
+ 2   first_name          14984 non-null  object 
+ 3   state               14984 non-null  object 
+ 4   gender              14984 non-null  object 
+ 5   age                 14984 non-null  int64  
+ 6   tenure              14984 non-null  int64  
+ 7   creditscore         14984 non-null  int64  
+ 8   balance             14984 non-null  float64
+ 9   hascrcard           14984 non-null  int64  
+ 10  card_type           14984 non-null  object 
+ 11  hasloan             14984 non-null  int64  
+ 12  hasfd               14984 non-null  int64  
+ 13  numofproducts       14984 non-null  int64  
+ 14  isactivemember      14984 non-null  int64  
+ 15  salary              14984 non-null  float64
+ 16  exited              14984 non-null  int64  
+ 17  complain            14984 non-null  int64  
+ 18  numcomplain         14984 non-null  int64  
+ 19  satisfaction_score  14984 non-null  float64
+ 20  point_earned        14984 non-null  int64  
+ 21  preferredchannel    14984 non-null  object 
+dtypes: float64(3), int64(13), object(6)

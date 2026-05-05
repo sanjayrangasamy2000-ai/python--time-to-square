@@ -1,2 +1,2 @@
-# python--time-to-square
+# python-Time-to-square
 Numpy
